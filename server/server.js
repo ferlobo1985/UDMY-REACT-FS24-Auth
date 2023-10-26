@@ -26,7 +26,26 @@ app.post('/api/user',async(req,res)=>{
     } catch(err){
         res.status(400).send(err)
     }
+});
+
+
+app.post('/api/user/login',async(req,res)=>{
+    try{
+        // 1 -find the user,if good, -> move forward
+        let user = await User.findOne({'email':req.body.email});
+        if(!user) throw 'User not found';
+
+        // 2 - compare the password with the HASHED password on the DB, -> move forward
+        res.status(200).send(user);
+    } catch(error){
+        res.json({message:error})
+    }
+    
+
+    // 3 - send response
+
 })
+
 
 
 const port = process.env.PORT || 3000;
