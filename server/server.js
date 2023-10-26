@@ -14,6 +14,21 @@ app.use(bodyParser.json());
 const { User } = require('./models/user');
 
 
+app.post('/api/user',async(req,res)=>{
+    try{
+        const user = new User({
+            email: req.body.email,
+            password: req.body.password
+        });
+
+        let doc = await user.save();
+        res.status(200).send(doc);
+    } catch(err){
+        res.status(400).send(err)
+    }
+})
+
+
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log(`Started on port ${port}`)
