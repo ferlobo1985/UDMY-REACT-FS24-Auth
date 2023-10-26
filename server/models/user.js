@@ -59,5 +59,20 @@ userSchema.methods.generateToken = async function(cb){
     }
 }
 
+
+userSchema.statics.findByToken = function(token,cb){
+    const user = this;  
+
+    jwt.verify(token,'supersecretpassword',async(err,decode)=>{
+        try{
+            let userDoc = await user.findOne({'_id':decode}) /// go to DB , and get USER INFO
+            cb(null,userDoc);
+        } catch(error){
+            if(err) return cb(err)
+        }
+    })
+}
+
+
 const User = mongoose.model('User',userSchema);
 module.exports = { User }
